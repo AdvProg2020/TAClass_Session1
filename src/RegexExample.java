@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,7 +44,7 @@ public class RegexExample {
                         "<H4>EXERCISE</H4>\n" +
                         "\n" +
                         "<P>Write a simple web page.</P>\n" +
-                        "<P> Copy out exactly the HTML below, using a WP program such as Notepad.<BR>\n" +
+                        "<P> Copy out exactly the HTML https://quera.ir below, using a WP program such as Notepad.<BR>\n" +
                         "Information in <I>italics</I> indicates where you can insert your own text, other information is HTML and needs to be exact. However, make sure there are no spaces between the tag brackets and the text inside.<BR>\n" +
                         "(Find Notepad by going to the START menu\\ PROGRAMS\\ ACCESSORIES\\ NOTEPAD). \n" +
                         "<P>\n" +
@@ -86,14 +88,27 @@ public class RegexExample {
                         "</BODY>\n" +
                         "</HTML>";
 
+        ArrayList<String> links = new ArrayList<>();
+        HashMap<String, Integer> linksNum = new HashMap<>();
+
         String patternString = "(https://.*\\.ir)";
 
         Pattern pattern = Pattern.compile(patternString);
         Matcher matcher = pattern.matcher(text);
 
-        int count = 0;
         while (matcher.find()) {
-            System.out.println("found: " + matcher.group(1));
+            String foundLink = matcher.group(1);
+            System.out.println("found: " + foundLink);
+            if(links.contains(foundLink)) {
+                linksNum.replace(foundLink, linksNum.get(foundLink) + 1);
+            } else {
+                links.add(foundLink);
+                linksNum.put(foundLink, 1);
+            }
+        }
+
+        for (String key:linksNum.keySet()) {
+            System.out.println(key + " : " + linksNum.get(key));
         }
     }
 }
